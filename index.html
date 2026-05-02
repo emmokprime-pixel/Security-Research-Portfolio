@@ -3,58 +3,444 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InvariantZero | Stealth Security Researcher</title>
-    <link rel="stylesheet" href="style.css">
+    <title>InvariantZero | Protocol Security Researcher</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #00f2ff;
+            --accent-glow: rgba(0, 242, 255, 0.3);
+            --violet: #6e00ff;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #ffffff;
+            --text-dim: #888888;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- Custom Cursor --- */
+        #cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        #cursor-dot {
+            width: 4px;
+            height: 4px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* --- Background Particles --- */
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .glitch-wrapper {
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: clamp(4rem, 15vw, 12rem);
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            line-height: 0.9;
+            text-transform: uppercase;
+            position: relative;
+            background: linear-gradient(180deg, #fff 0%, #444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-title::before, .hero-title::after {
+            content: "INVARIANT ZERO";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+
+        .hero-title::before {
+            color: #0ff;
+            z-index: -1;
+            animation: glitch 0.4s cubic-bezier(.25, .46, .45, .94) both infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+        }
+
+        .hero-title::after {
+            color: #f0f;
+            z-index: -2;
+            animation: glitch 0.4s cubic-bezier(.25, .46, .45, .94) reverse both infinite;
+            clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-3px, 3px) }
+            40% { transform: translate(-3px, -3px) }
+            60% { transform: translate(3px, 3px) }
+            80% { transform: translate(3px, -3px) }
+            100% { transform: translate(0) }
+        }
+
+        .hero-tagline {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--accent);
+            margin-top: 1rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        /* --- Content Sections --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title::after {
+            content: "";
+            height: 2px;
+            flex-grow: 1;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        /* --- Cards --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px var(--accent-glow);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .card-desc {
+            color: var(--text-dim);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .card-link:hover {
+            color: var(--accent);
+        }
+
+        /* --- Buttons --- */
+        .btn-glow {
+            padding: 1rem 2.5rem;
+            background: var(--accent);
+            color: #000;
+            text-decoration: none;
+            font-weight: 900;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px var(--accent-glow);
+            display: inline-block;
+        }
+
+        .btn-glow:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px var(--accent);
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 8rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, transparent, rgba(110, 0, 255, 0.05));
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            letter-spacing: -0.05em;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .social-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            transition: color 0.3s;
+        }
+
+        .social-link:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 5rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
-    <div class="glimmer" id="glimmer"></div>
+    <div id="cursor"></div>
+    <div id="cursor-dot"></div>
+    <canvas id="canvas"></canvas>
+
+    <section class="hero">
+        <div class="glitch-wrapper">
+            <h1 class="hero-title">INVARIANT<br>ZERO</h1>
+        </div>
+        <p class="hero-tagline">Protocol Logic & Arithmetic Security</p>
+        <div style="margin-top: 4rem;">
+            <a href="#findings" class="btn-glow">Explore Findings</a>
+        </div>
+    </section>
 
     <div class="container">
-        <header>
-            <span class="card-tag" style="color: var(--accent);">[ STATUS: STEALTH ]</span>
-            <h1 class="hero-title">INVARIANT<br>ZERO</h1>
-            <p class="hero-subtitle">Consensus Logic & Arithmetic Safety Researcher</p>
-            <div style="display: flex; gap: 1rem;">
-                <a href="https://github.com/emmokprime-pixel" class="btn-primary">GitHub Profile</a>
-                <a href="#findings" style="color: var(--fg); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 700;">View Findings ↓</a>
-            </div>
-        </header>
-
         <section id="findings">
+            <h2 class="section-title">Critical Remediation</h2>
             <div class="grid">
-                <!-- Finding 1 -->
-                <div class="card glass">
-                    <span class="card-tag">Critical Finding</span>
-                    <h3 class="card-title">Optimism (op-revm)</h3>
-                    <p class="card-desc">Identified a state-machine inconsistency in the Bedrock hardfork handler where Create deposits failed to increment nonces on Halt. Engineered the consensus-critical fix.</p>
+                <div class="card">
+                    <span class="card-tag">L2 Consensus / Rust</span>
+                    <h3 class="card-title">Optimism: op-revm</h3>
+                    <p class="card-desc">Discovered a consensus-critical state inconsistency where 'Create' deposits in the Bedrock hardfork failed to bump nonces on Halt. Engineered the cross-hardfork logic fix.</p>
+                    <a href="https://github.com/ethereum-optimism/optimism/pull/20504" class="card-link">View PR #20504 ↗</a>
                 </div>
-
-                <!-- Finding 2 -->
-                <div class="card glass">
-                    <span class="card-tag">Remediated</span>
+                <div class="card">
+                    <span class="card-tag">Economic Logic / Solidity</span>
                     <h3 class="card-title">Morpho Blue</h3>
-                    <p class="card-desc">Discovered a systematic protocol fee denial vulnerability due to precision truncation. Developed the high-precision wMulUp arithmetic primitive for the core contract.</p>
+                    <p class="card-desc">Identified a rounding-down vulnerability in interest accrual causing protocol fee denial. Implemented high-precision arithmetic overrides.</p>
+                    <a href="#" class="card-link">Read Audit Report ↗</a>
                 </div>
-
-                <!-- Finding 3 -->
-                <div class="card glass">
+                <div class="card">
                     <span class="card-tag">Infrastructure</span>
-                    <h3 class="card-title">EVM State Fuzzer</h3>
-                    <p class="card-desc">A custom Rust-based differential state-root fuzzer designed to identify logic divergences between base revm and L2-specific extensions.</p>
+                    <h3 class="card-title">Nexus Fuzzer</h3>
+                    <p class="card-desc">A proprietary differential state-root fuzzer designed to identify logic divergences between base EVM and L2 extension layers.</p>
+                    <a href="#" class="card-link">Source coming soon ↗</a>
                 </div>
             </div>
         </section>
 
-        <section class="cta-section">
-            <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">Invariants are the only laws.</h2>
-            <p style="color: #888; margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">I specialize in auditing the edge cases where math meets state. Currently focused on L2 handler logic and cross-chain message integrity.</p>
-            <a href="mailto:contact@invariantzero.io" class="btn-primary">Secure Outreach</a>
+        <section id="about" style="margin-top: 8rem;">
+            <h2 class="section-title">The Methodology</h2>
+            <p style="font-size: 1.5rem; color: var(--text-dim); max-width: 800px;">
+                Invariants are the only immutable laws in a state machine. I bypass high-level source code to audit the <span style="color: var(--accent);">underlying arithmetic</span> and <span style="color: var(--violet);">state-transition logic</span> where the most critical vulnerabilities reside.
+            </p>
         </section>
     </div>
 
-    <script src="app.js"></script>
+    <footer>
+        <div class="footer-logo">INVARIANT ZERO</div>
+        <div class="social-links">
+            <a href="https://github.com/emmokprime-pixel" class="social-link">GITHUB</a>
+            <a href="https://twitter.com/emokprime" class="social-link">X / TWITTER</a>
+            <a href="mailto:contact@invariantzero.io" class="social-link">EMAIL</a>
+        </div>
+        <p style="color: var(--text-dim); font-size: 0.8rem; letter-spacing: 0.1em;">© 2024 STEALTH OPERATIONS. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        // --- Canvas Background ---
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = '#00f2ff';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function createParticles() {
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            // Draw lines
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 100) {
+                        ctx.strokeStyle = `rgba(0, 242, 255, ${1 - dist / 100})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        createParticles();
+        animate();
+
+        // --- Custom Cursor ---
+        const cursor = document.getElementById('cursor');
+        const dot = document.getElementById('cursor-dot');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            dot.style.left = e.clientX + 'px';
+            dot.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('a, .card').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2.5)');
+            el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+        });
+    </script>
 </body>
 </html>

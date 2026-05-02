@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvariantZero | Stealth Security Researcher</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="glimmer" id="glimmer"></div>
+
+    <div class="container">
+        <header>
+            <span class="card-tag" style="color: var(--accent);">[ STATUS: STEALTH ]</span>
+            <h1 class="hero-title">INVARIANT<br>ZERO</h1>
+            <p class="hero-subtitle">Consensus Logic & Arithmetic Safety Researcher</p>
+            <div style="display: flex; gap: 1rem;">
+                <a href="https://github.com/emmokprime-pixel" class="btn-primary">GitHub Profile</a>
+                <a href="#findings" style="color: var(--fg); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 700;">View Findings ↓</a>
+            </div>
+        </header>
+
+        <section id="findings">
+            <div class="grid">
+                <!-- Finding 1 -->
+                <div class="card glass">
+                    <span class="card-tag">Critical Finding</span>
+                    <h3 class="card-title">Optimism (op-revm)</h3>
+                    <p class="card-desc">Identified a state-machine inconsistency in the Bedrock hardfork handler where Create deposits failed to increment nonces on Halt. Engineered the consensus-critical fix.</p>
+                </div>
+
+                <!-- Finding 2 -->
+                <div class="card glass">
+                    <span class="card-tag">Remediated</span>
+                    <h3 class="card-title">Morpho Blue</h3>
+                    <p class="card-desc">Discovered a systematic protocol fee denial vulnerability due to precision truncation. Developed the high-precision wMulUp arithmetic primitive for the core contract.</p>
+                </div>
+
+                <!-- Finding 3 -->
+                <div class="card glass">
+                    <span class="card-tag">Infrastructure</span>
+                    <h3 class="card-title">EVM State Fuzzer</h3>
+                    <p class="card-desc">A custom Rust-based differential state-root fuzzer designed to identify logic divergences between base revm and L2-specific extensions.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">Invariants are the only laws.</h2>
+            <p style="color: #888; margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">I specialize in auditing the edge cases where math meets state. Currently focused on L2 handler logic and cross-chain message integrity.</p>
+            <a href="mailto:contact@invariantzero.io" class="btn-primary">Secure Outreach</a>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

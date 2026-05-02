@@ -1,0 +1,3 @@
+[submodule "deterministic-evm-fuzzer/morpho-blue-repo"]
+	path = deterministic-evm-fuzzer/morpho-blue-repo
+	url = https://github.com/morpho-org/morpho-blue.git

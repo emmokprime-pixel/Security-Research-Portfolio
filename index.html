@@ -350,10 +350,12 @@
             <a href="https://twitter.com/emokprime" class="social-link">X / TWITTER</a>
             <a href="mailto:contact@invariantzero.io" class="social-link">EMAIL</a>
         </div>
-        <p style="color: var(--text-dim); font-size: 0.8rem; letter-spacing: 0.1em;">© 2024 STEALTH OPERATIONS. ALL RIGHTS RESERVED.</p>
+        <p style="color: var(--text-dim); font-size: 0.8rem; letter-spacing: 0.1em;">© <span id="year">2026</span> STEALTH OPERATIONS. ALL RIGHTS RESERVED.</p>
     </footer>
 
     <script>
+        // Set dynamic year
+        document.getElementById('year').textContent = new Date().getFullYear();
         // --- Canvas Background ---
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');

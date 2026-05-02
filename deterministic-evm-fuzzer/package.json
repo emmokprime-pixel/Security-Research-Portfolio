@@ -1,0 +1,20 @@
+{
+  "name": "deterministic-evm-fuzzer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chart.js": "^4.5.1",
+    "clsx": "^2.1.1",
+    "lucide": "^1.14.0",
+    "tailwind-merge": "^3.5.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.10"
+  }
+}

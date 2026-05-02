@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morpho Blue Security | Adversarial Dashboard</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="app" class="dashboard">
+        <aside class="sidebar">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                MORPHO.AUDIT
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li class="nav-item active">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></nav>
+                    </li>
+                    <li class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        Critical Findings
+                    </li>
+                    <li class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                        Oracle Health
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div>
+                    <h1>Morpho Blue Protocol</h1>
+                    <p class="stat-label">Adversarial Security Analysis</p>
+                </div>
+                <div class="stat-card" style="padding: 0.75rem 1.5rem;">
+                    <span class="severity-badge severity-critical">LIVE AUDIT MODE</span>
+                </div>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card animate-in" style="animation-delay: 0.1s">
+                    <div class="stat-label">Audit Score</div>
+                    <div class="stat-value">CRITICAL RISK</div>
+                    <div style="color: var(--danger); font-size: 0.75rem;">▲ Exploit Potential High</div>
+                </div>
+                <div class="stat-card animate-in" style="animation-delay: 0.2s">
+                    <div class="stat-label">Identified Vulns</div>
+                    <div class="stat-value">4 High / Crit</div>
+                    <div style="color: var(--warning); font-size: 0.75rem;">Verifying PoC Scripts...</div>
+                </div>
+                <div class="stat-card animate-in" style="animation-delay: 0.3s">
+                    <div class="stat-label">Market Coverage</div>
+                    <div class="stat-value">100% Core</div>
+                    <div style="color: var(--success); font-size: 0.75rem;">All IRM verified</div>
+                </div>
+            </div>
+
+            <div class="findings-container" id="findings-list">
+                <!-- Findings injected here -->
+            </div>
+        </main>
+    </div>
+    <script type="module" src="./main.ts"></script>
+</body>
+</html>

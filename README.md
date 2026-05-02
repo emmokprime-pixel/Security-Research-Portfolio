@@ -1,15 +1,39 @@
-# Security Research Portfolio | InvariantZero
+# InvariantZero
+### Stealth Security Researcher & Protocol Engineer
 
-> **"Silent execution, public validation."**
-> 
-> *While this repository and my public profile were formally established in 2026, the research contained here is the culmination of years of deep, adversarial security work. After spending years tearing down enterprise Web2 infrastructure (disclosing 150+ high-severity vulnerabilities) and quietly building proprietary EVM fuzzing architecture in the background, I am finally making my Web3 research public.*
+> **Consensus-level state machine auditing. Low-level EVM arithmetic security. Custom fuzzing infrastructure.**
 
-This repository contains my public vulnerability research, deep-dive architectural audits, and the custom fuzzing tools I use to break Tier-1 DeFi protocols. I focus exclusively on absolute-depth, low-level vulnerabilities: precision truncation, cross-chain state desynchronization, and binary/opcode-level logic flaws.
+---
 
-## Core Capabilities
-*   **Adversarial Protocol Auditing:** Identifying complex insolvency vectors that standard static analysis misses.
-*   **Custom Tooling:** Creator of a proprietary, state-aware deterministic EVM fuzzing engine.
-*   **Cross-Chain Security:** Deep expertise in messaging layers, signature replay, and L2 sequencer risks.
+## 🛡️ Protocol Remediations & Findings
+
+### [PR #20504] Optimism (op-revm): Bedrock Deposit Nonce Inconsistency
+**Status:** Open / Under Review by @rakita
+- Identified a consensus-critical bug where `Create` deposits in the Bedrock hardfork failed to increment nonces on execution halts.
+- Engineered a hardfork-agnostic fix in the `op-revm` handler and contributed a verified regression test suite.
+
+### Morpho Blue: Systematic Protocol Fee Denial
+**Status:** Remediated
+- Discovered a systemic rounding-down vulnerability in interest accrual logic that allowed users to zero-out protocol fees.
+- Implemented a `wMulUp` arithmetic patch to enforce fee-favorable rounding and preserve protocol revenue.
+
+---
+
+## 🛠️ Infrastructure & Tools
+
+### `deterministic-evm-fuzzer`
+**Core Logic:** Differential state-root fuzzing for L2 handlers.
+- Built a high-performance Rust tool for identifying state-machine divergences between `revm` and L2-specific extensions (Optimism/Base).
+
+---
+
+## 🧠 Technical Stack
+- **Languages:** Rust (Core), Solidity, TypeScript.
+- **Deep Skills:** EVM Opcode Analysis, State-Journaling, Consensus Rules, Fixed-point Math Security.
+
+---
+
+*"Code is the law, but the law has bugs. I find them."*
 
 ## Portfolio Contents
 

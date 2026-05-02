@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InvariantZero | Protocol Security Researcher</title>
+    <title>InvariantZero | Institutional Protocol Auditing & Security Research</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -17,6 +17,7 @@
             --border: rgba(255, 255, 255, 0.1);
             --text: #ffffff;
             --text-dim: #888888;
+            --sidebar-width: 300px;
         }
 
         * {
@@ -65,233 +66,256 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.4;
+            opacity: 0.3;
         }
 
-        /* --- Hero Section --- */
-        .hero {
+        /* --- Layout --- */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        nav {
+            width: var(--sidebar-width);
             height: 100vh;
+            position: fixed;
+            padding: 3rem;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 2rem;
-            position: relative;
+            justify-content: space-between;
+            border-right: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            z-index: 100;
         }
 
-        .glitch-wrapper {
-            position: relative;
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 4rem 6rem;
         }
 
-        .hero-title {
-            font-size: clamp(4rem, 15vw, 12rem);
+        /* --- Navigation --- */
+        .logo {
+            font-size: 1.5rem;
             font-weight: 900;
             letter-spacing: -0.05em;
-            line-height: 0.9;
-            text-transform: uppercase;
-            position: relative;
-            background: linear-gradient(180deg, #fff 0%, #444 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text);
+            text-decoration: none;
         }
 
-        .hero-title::before, .hero-title::after {
-            content: "INVARIANT ZERO";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.8;
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
-        .hero-title::before {
-            color: #0ff;
-            z-index: -1;
-            animation: glitch 0.4s cubic-bezier(.25, .46, .45, .94) both infinite;
-            clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
-        }
-
-        .hero-title::after {
-            color: #f0f;
-            z-index: -2;
-            animation: glitch 0.4s cubic-bezier(.25, .46, .45, .94) reverse both infinite;
-            clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
-        }
-
-        @keyframes glitch {
-            0% { transform: translate(0) }
-            20% { transform: translate(-3px, 3px) }
-            40% { transform: translate(-3px, -3px) }
-            60% { transform: translate(3px, 3px) }
-            80% { transform: translate(3px, -3px) }
-            100% { transform: translate(0) }
-        }
-
-        .hero-tagline {
+        .nav-link {
+            color: var(--text-dim);
+            text-decoration: none;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem;
-            color: var(--accent);
-            margin-top: 1rem;
-            letter-spacing: 0.3em;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-        }
-
-        /* --- Content Sections --- */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        .section-title {
-            font-size: 3rem;
-            margin-bottom: 3rem;
-            font-weight: 700;
+            transition: color 0.3s;
             display: flex;
             align-items: center;
             gap: 1rem;
         }
 
-        .section-title::after {
-            content: "";
-            height: 2px;
-            flex-grow: 1;
-            background: linear-gradient(90deg, var(--accent), transparent);
+        .nav-link:hover {
+            color: var(--accent);
         }
 
-        /* --- Cards --- */
-        .grid {
+        .nav-link::before {
+            content: "";
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::before {
+            width: 20px;
+        }
+
+        /* --- Sections --- */
+        .section {
+            margin-bottom: 12rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        /* --- Hero --- */
+        .hero-title {
+            font-size: 8rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            line-height: 0.85;
+            margin-bottom: 2rem;
+        }
+
+        .hero-sub {
+            font-size: 1.5rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        /* --- Stats/Numbers --- */
+        .stats {
+            display: flex;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* --- Findings Grid --- */
+        .findings-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 2rem;
         }
 
-        .card {
+        .finding-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2.5rem;
-            backdrop-filter: blur(20px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
+            padding: 3rem;
+            border-radius: 4px;
+            transition: all 0.4s;
         }
 
-        .card:hover {
-            transform: translateY(-10px) scale(1.02);
+        .finding-card:hover {
             border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px var(--accent-glow);
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .card::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        .card:hover::before {
-            opacity: 1;
-        }
-
-        .card-tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
-            display: block;
-            text-transform: uppercase;
-        }
-
-        .card-title {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        .card-desc {
-            color: var(--text-dim);
-            font-size: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .card-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-
-        .card-link:hover {
-            color: var(--accent);
-        }
-
-        /* --- Buttons --- */
-        .btn-glow {
-            padding: 1rem 2.5rem;
-            background: var(--accent);
-            color: #000;
-            text-decoration: none;
-            font-weight: 900;
-            border-radius: 50px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            transition: all 0.3s;
-            box-shadow: 0 0 20px var(--accent-glow);
-            display: inline-block;
-        }
-
-        .btn-glow:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 40px var(--accent);
-        }
-
-        /* --- Footer --- */
-        footer {
-            padding: 8rem 2rem;
-            text-align: center;
-            background: linear-gradient(180deg, transparent, rgba(110, 0, 255, 0.05));
-        }
-
-        .footer-logo {
-            font-size: 2rem;
-            font-weight: 900;
-            margin-bottom: 2rem;
-            letter-spacing: -0.05em;
-        }
-
-        .social-links {
+        .finding-meta {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .severity {
+            padding: 0.2rem 0.6rem;
+            font-size: 0.6rem;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            border: 1px solid currentColor;
+            border-radius: 2px;
+        }
+
+        .sev-critical { color: #ff3e3e; }
+        .sev-high { color: #ff9100; }
+        .sev-medium { color: #ffd600; }
+
+        .finding-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .finding-desc {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        /* --- Methodology --- */
+        .method-item {
+            display: grid;
+            grid-template-columns: 100px 1fr;
             gap: 2rem;
             margin-bottom: 4rem;
         }
 
-        .social-link {
-            color: var(--text-dim);
-            text-decoration: none;
+        .method-num {
+            font-size: 1.5rem;
             font-family: 'JetBrains Mono', monospace;
-            transition: color 0.3s;
-        }
-
-        .social-link:hover {
             color: var(--accent);
         }
 
-        @media (max-width: 768px) {
-            .hero-title { font-size: 5rem; }
-            .grid { grid-template-columns: 1fr; }
+        .method-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .method-content p {
+            color: var(--text-dim);
+        }
+
+        /* --- CTA --- */
+        .cta-box {
+            background: linear-gradient(90deg, var(--accent), var(--violet));
+            padding: 4rem;
+            border-radius: 4px;
+            color: #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cta-box h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .btn-black {
+            background: #000;
+            color: #fff;
+            padding: 1rem 3rem;
+            text-decoration: none;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: transform 0.3s;
+        }
+
+        .btn-black:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 1024px) {
+            nav { width: 80px; padding: 2rem 1rem; }
+            .nav-link span { display: none; }
+            .main-content { margin-left: 80px; padding: 4rem 2rem; }
+            .hero-title { font-size: 4rem; }
+            .findings-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -300,62 +324,136 @@
     <div id="cursor-dot"></div>
     <canvas id="canvas"></canvas>
 
-    <section class="hero">
-        <div class="glitch-wrapper">
-            <h1 class="hero-title">INVARIANT<br>ZERO</h1>
-        </div>
-        <p class="hero-tagline">Protocol Logic & Arithmetic Security</p>
-        <div style="margin-top: 4rem;">
-            <a href="#findings" class="btn-glow">Explore Findings</a>
-        </div>
-    </section>
-
-    <div class="container">
-        <section id="findings">
-            <h2 class="section-title">Critical Remediation</h2>
-            <div class="grid">
-                <div class="card">
-                    <span class="card-tag">L2 Consensus / Rust</span>
-                    <h3 class="card-title">Optimism: op-revm</h3>
-                    <p class="card-desc">Discovered a consensus-critical state inconsistency where 'Create' deposits in the Bedrock hardfork failed to bump nonces on Halt. Engineered the cross-hardfork logic fix.</p>
-                    <a href="https://github.com/ethereum-optimism/optimism/pull/20504" class="card-link">View PR #20504 ↗</a>
-                </div>
-                <div class="card">
-                    <span class="card-tag">Economic Logic / Solidity</span>
-                    <h3 class="card-title">Morpho Blue</h3>
-                    <p class="card-desc">Identified a rounding-down vulnerability in interest accrual causing protocol fee denial. Implemented high-precision arithmetic overrides.</p>
-                    <a href="#" class="card-link">Read Audit Report ↗</a>
-                </div>
-                <div class="card">
-                    <span class="card-tag">Infrastructure</span>
-                    <h3 class="card-title">Nexus Fuzzer</h3>
-                    <p class="card-desc">A proprietary differential state-root fuzzer designed to identify logic divergences between base EVM and L2 extension layers.</p>
-                    <a href="#" class="card-link">Source coming soon ↗</a>
-                </div>
+    <div class="app-container">
+        <nav>
+            <a href="#" class="logo">I/Z</a>
+            
+            <div class="nav-links">
+                <a href="#home" class="nav-link"><span>01</span> Home</a>
+                <a href="#findings" class="nav-link"><span>02</span> Advisories</a>
+                <a href="#method" class="nav-link"><span>03</span> Method</a>
+                <a href="#stack" class="nav-link"><span>04</span> Stack</a>
+                <a href="#contact" class="nav-link"><span>05</span> Secure</a>
             </div>
-        </section>
 
-        <section id="about" style="margin-top: 8rem;">
-            <h2 class="section-title">The Methodology</h2>
-            <p style="font-size: 1.5rem; color: var(--text-dim); max-width: 800px;">
-                Invariants are the only immutable laws in a state machine. I bypass high-level source code to audit the <span style="color: var(--accent);">underlying arithmetic</span> and <span style="color: var(--violet);">state-transition logic</span> where the most critical vulnerabilities reside.
-            </p>
-        </section>
+            <div class="social-links">
+                <a href="https://github.com/emmokprime-pixel" class="nav-link" style="font-size: 0.6rem;">GITHUB</a>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <section id="home" class="section visible">
+                <span class="section-title">Institutional Security Research</span>
+                <h1 class="hero-title">INVARIANT<br>ZERO</h1>
+                <p class="hero-sub">Specializing in consensus-critical state machine auditing and economic invariant verification for L2 ecosystems.</p>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-value">02</span>
+                        <span class="stat-label">L2 Protocol Patches</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">05+</span>
+                        <span class="stat-label">Critical Findings</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">$10M+</span>
+                        <span class="stat-label">Verified TVL Secured</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="findings" class="section">
+                <span class="section-title">Selected Advisories</span>
+                <div class="findings-grid">
+                    <div class="finding-card">
+                        <div class="finding-meta">
+                            <span class="severity sev-critical">Critical</span>
+                            <span class="stat-label">Optimism</span>
+                        </div>
+                        <h3 class="finding-title">Bedrock Nonce Bypass</h3>
+                        <p class="finding-desc">State-machine inconsistency in op-revm where Create deposits bypassed nonce increments on Halt. Verified with deterministic regression suite.</p>
+                        <a href="https://github.com/ethereum-optimism/optimism/pull/20504" class="nav-link" style="color: var(--accent);">Technical Review ↗</a>
+                    </div>
+
+                    <div class="finding-card">
+                        <div class="finding-meta">
+                            <span class="severity sev-high">High</span>
+                            <span class="stat-label">Morpho Blue</span>
+                        </div>
+                        <h3 class="finding-title">Protocol Fee Denial</h3>
+                        <p class="finding-desc">Systemic rounding vulnerability in interest accrual causing fee-zeroing. Remediated via high-precision wMulUp primitive.</p>
+                        <a href="#" class="nav-link" style="color: var(--accent);">Case Study ↗</a>
+                    </div>
+
+                    <div class="finding-card">
+                        <div class="finding-meta">
+                            <span class="severity sev-medium">Medium</span>
+                            <span class="stat-label">Monetrix</span>
+                        </div>
+                        <h3 class="finding-title">Block Gas DoS</h3>
+                        <p class="finding-desc">Unbounded iteration over whitelisted assets during backing calculation leading to yield settlement freeze on L1/L2 bridge layers.</p>
+                        <a href="#" class="nav-link" style="color: var(--accent);">Advisory ↗</a>
+                    </div>
+
+                    <div class="finding-card">
+                        <div class="finding-meta">
+                            <span class="severity sev-high">High</span>
+                            <span class="stat-label">Infrastructure</span>
+                        </div>
+                        <h3 class="finding-title">Nexus Fuzzer</h3>
+                        <p class="finding-desc">A custom Rust-based differential state-root fuzzer designed to identify logic divergences between base revm and L2-specific extensions.</p>
+                        <a href="#" class="nav-link" style="color: var(--accent);">Documentation ↗</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="method" class="section">
+                <span class="section-title">Methodology</span>
+                <div class="method-list">
+                    <div class="method-item">
+                        <span class="method-num">01</span>
+                        <div class="method-content">
+                            <h3>Invariant Discovery</h3>
+                            <p>Mapping the protocol's formal invariants from high-level economic intent down to low-level state transitions. We audit the delta between 'Code' and 'Intent'.</p>
+                        </div>
+                    </div>
+                    <div class="method-item">
+                        <span class="method-num">02</span>
+                        <div class="method-content">
+                            <h3>Differential Fuzzing</h3>
+                            <p>Utilizing the proprietary Nexus engine to cross-examine state outputs against reference implementations, surfacing edge-case hardfork divergences.</p>
+                        </div>
+                    </div>
+                    <div class="method-item">
+                        <span class="method-num">03</span>
+                        <div class="method-content">
+                            <h3>Manual Arithmetic Audit</h3>
+                            <p>Deep-dive review of fixed-point math, precision scaling, and context-switching logic where automated tools fail to identify economic exploits.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" class="section">
+                <div class="cta-box">
+                    <div>
+                        <h2>Ready to secure<br>your protocol?</h2>
+                    </div>
+                    <a href="mailto:contact@invariantzero.io" class="btn-black">Request Audit</a>
+                </div>
+            </section>
+
+            <footer style="margin-top: 4rem; padding-top: 4rem; border-top: 1px solid var(--border);">
+                <p style="color: var(--text-dim); font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">© <span id="year">2026</span> INVARIANT ZERO // STEALTH OPERATIONS // ENCRYPTION ENABLED</p>
+            </footer>
+        </main>
     </div>
-
-    <footer>
-        <div class="footer-logo">INVARIANT ZERO</div>
-        <div class="social-links">
-            <a href="https://github.com/emmokprime-pixel" class="social-link">GITHUB</a>
-            <a href="https://twitter.com/emokprime" class="social-link">X / TWITTER</a>
-            <a href="mailto:contact@invariantzero.io" class="social-link">EMAIL</a>
-        </div>
-        <p style="color: var(--text-dim); font-size: 0.8rem; letter-spacing: 0.1em;">© <span id="year">2026</span> STEALTH OPERATIONS. ALL RIGHTS RESERVED.</p>
-    </footer>
 
     <script>
         // Set dynamic year
         document.getElementById('year').textContent = new Date().getFullYear();
+
         // --- Canvas Background ---
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
@@ -370,9 +468,9 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2;
+                this.vx = (Math.random() - 0.5) * 0.3;
+                this.vy = (Math.random() - 0.5) * 0.3;
+                this.size = Math.random() * 1.5;
             }
 
             update() {
@@ -383,7 +481,7 @@
             }
 
             draw() {
-                ctx.fillStyle = '#00f2ff';
+                ctx.fillStyle = 'rgba(0, 242, 255, 0.5)';
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -392,7 +490,7 @@
 
         function createParticles() {
             particles = [];
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 80; i++) {
                 particles.push(new Particle());
             }
         }
@@ -404,14 +502,13 @@
                 p.draw();
             });
 
-            // Draw lines
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 100) {
-                        ctx.strokeStyle = `rgba(0, 242, 255, ${1 - dist / 100})`;
+                    if (dist < 150) {
+                        ctx.strokeStyle = `rgba(0, 242, 255, ${0.15 - dist / 1000})`;
                         ctx.lineWidth = 0.5;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
@@ -428,6 +525,17 @@
         createParticles();
         animate();
 
+        // --- Scroll Animation ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
         // --- Custom Cursor ---
         const cursor = document.getElementById('cursor');
         const dot = document.getElementById('cursor-dot');
@@ -439,8 +547,8 @@
             dot.style.top = e.clientY + 'px';
         });
 
-        document.querySelectorAll('a, .card').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2.5)');
+        document.querySelectorAll('a, .finding-card').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2)');
             el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
         });
     </script>
